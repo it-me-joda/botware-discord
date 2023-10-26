@@ -1,31 +1,31 @@
 {
-  "name": "discord-bot",
-  "version": "1.0.0",
-  "description": "Simplify the process of setting up your Discord bot",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
-  "repository": "git@github.com:josephbartley/discord-bot.git",
-  "author": "Joseph Bartley <josephdanielbartley@gmail.com>",
-  "license": "ISC",
-  "scripts": {
-    "dev": "nodemon src/index.ts",
-    "build": "tsc",
-    "prepare": "npm run build",
-    "lint": "eslint src/**/*.ts",
-    "prettier": "prettier --write \"src/**/*.ts\""
-  },
-  "files": [
-    "lib/**/*"
-  ],
-  "devDependencies": {
-    "@types/node": "^20.8.7",
-    "@typescript-eslint/eslint-plugin": "^6.8.0",
-    "discord.js": "^14.13.0",
-    "eslint": "^8.52.0",
-    "eslint-config-prettier": "^9.0.0",
-    "nodemon": "^3.0.1",
-    "prettier": "^3.0.3",
-    "ts-node": "^10.9.1",
-    "typescript": "^5.2.2"
-  }
+	"name": "botware-discord",
+	"version": "1.0.0",
+	"description": "Simplify the process of setting up your Discord bot",
+	"main": "lib/index.js",
+	"types": "lib/index.d.ts",
+	"repository": "git@github.com:josephbartley/botware-discord.git",
+	"author": "Joseph Bartley <josephdanielbartley@gmail.com>",
+	"license": "ISC",
+	"scripts": {
+		"dev": "nodemon src/index.ts",
+		"build": "tsc",
+		"prepare": "npm run build",
+		"lint": "eslint src/**/*.ts",
+		"prettier": "prettier --write \"src/**/*.ts\""
+	},
+	"files": [
+		"lib/**/*"
+	],
+	"devDependencies": {
+		"@types/node": "^20.8.7",
+		"@typescript-eslint/eslint-plugin": "^6.8.0",
+		"discord.js": "^14.13.0",
+		"eslint": "^8.52.0",
+		"eslint-config-prettier": "^9.0.0",
+		"nodemon": "^3.0.1",
+		"prettier": "^3.0.3",
+		"ts-node": "^10.9.1",
+		"typescript": "^5.2.2"
+	}
 }
