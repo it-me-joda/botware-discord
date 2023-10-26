@@ -1,42 +1,31 @@
-import {
-	CacheType,
-	ChatInputCommandInteraction,
-	Client,
-	REST,
-	Routes,
-} from 'discord.js'
-import 'dotenv/config'
-import { Command } from './interfaces/command'
+import { Client, REST, Routes } from 'discord.js'
+import { DiscordBotCommand, DiscordBotInteraction } from './interfaces/command'
+import { DiscordBotConfig } from './interfaces/config'
 
-console.log('starting discord bot...')
-const TOKEN = process.env.TOKEN
-const CLIENT_ID = process.env.CLIENT_ID
-if (!TOKEN || !CLIENT_ID) throw new Error('must provide TOKEN and CLIENT_ID')
-;(async () => {
-	const commands = new Map<string, Command>([
-		[
-			'ping',
-			{
-				name: 'ping',
-				description: 'Replies with Pong!',
-				action: async (
-					interaction: ChatInputCommandInteraction<CacheType>,
-				) => {
-					await interaction.reply('Pong!')
-				},
-			},
-		],
-	])
+export async function startDiscordBot(
+	commands: DiscordBotCommand[],
+	config: DiscordBotConfig,
+): Promise<void> {
+	console.log('starting discord bot...')
+	if (!config || !config.token || !config.clientId)
+		throw new Error('config must provide TOKEN and CLIENT_ID')
+	const commandMap = new Map<string, DiscordBotCommand>()
+	commands.forEach((command) => {
+		commandMap.set(command.name, command)
+	})
 
-	const rest = new REST().setToken(TOKEN)
+	const rest = new REST().setToken(config.token)
 
 	try {
 		console.log('started refreshing / commands')
 
 		await rest
-			.put(Routes.applicationCommands(CLIENT_ID), {
+			.put(Routes.applicationCommands(config.clientId), {
 				body: Array.from(commands.values()).map((v) => {
-					const result = Object.assign({}, v) as Partial<Command>
+					const result = Object.assign(
+						{},
+						v,
+					) as Partial<DiscordBotCommand>
 					delete result.action
 					return result
 				}),
@@ -59,15 +48,15 @@ if (!TOKEN || !CLIENT_ID) throw new Error('must provide TOKEN and CLIENT_ID')
 	client.on('interactionCreate', async (interaction) => {
 		if (!interaction.isChatInputCommand()) return
 
-		const command = commands.get(interaction.commandName)
-		if (command) await command.action(interaction)
+		const t = interaction as unknown as DiscordBotInteraction
+
+		const command = commandMap.get(interaction.commandName)
+		if (command) await command.action(t)
 		else
 			await interaction.reply(
 				`no command found for /${interaction.commandName}`,
 			)
 	})
 
-	await client.login(TOKEN)
-})()
-	.then((v) => console.log(v))
-	.catch((r) => console.log(r))
+	await client.login(config.token)
+}

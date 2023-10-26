@@ -1,9 +1,9 @@
-import { CacheType, ChatInputCommandInteraction } from 'discord.js'
+export interface DiscordBotInteraction {
+	reply: (message: string) => Promise<void>
+}
 
-export interface Command {
+export interface DiscordBotCommand {
 	name: string
 	description: string
-	action: (
-		interaction: ChatInputCommandInteraction<CacheType>,
-	) => Promise<void>
+	action: (interaction: DiscordBotInteraction) => Promise<void>
 }
